@@ -32,5 +32,6 @@ jobs:
         run: echo "job 2 / step 1"
       
       - name: job 2 / step 2
-        run: echo "job 2 / step 2 :cake: " > $GITHUB_STEP_SUMMARY
+        run: |
+          echo "job 2 / step 2 :cake: " > $GITHUB_STEP_SUMMARY
   
