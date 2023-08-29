@@ -1,0 +1,31 @@
+name: tests
+on:
+  pull_request:
+  merge_group:
+  push:
+    branches:
+    - main
+
+
+jobs:
+  job1-merge-queue:
+    runs-on: ubuntu-latest
+    if: contains(github.event.head_commit.message, 'job1') || (github.event_name == 'merge_queue') 
+    steps:
+      - name: job 1 / step 1
+        run: echo "job 1 / step 1"
+      
+      - name: job 1 / step 2
+        run: echo "job 1 / step 2"
+
+
+  job2-push:
+    runs-on: ubuntu-latest
+    if: contains(github.event.head_commit.message, 'job2') || (github.event_name == 'push' && github.ref == 'refs/heads/main') 
+    steps:
+      - name: job 2 / step 1
+        run: echo "job 2 / step 1"
+      
+      - name: job 2 / step 2
+        run: echo "job 2 / step 2"
+  
