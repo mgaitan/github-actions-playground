@@ -4,32 +4,24 @@ on:
   merge_group:
   push:
     branches:
-    - main
-
+      - main
 
 jobs:
   job0:
     runs-on: ubuntu-latest
     steps:
-      - name: always
+
+      - uses: actions/checkout@v3
+      - name: start
         run: |
           echo "Event: ${{ github.event_name }}" > $GITHUB_STEP_SUMMARY
-          sleep 20 && echo "::notice file=.github/workflows/test_merge_group.yml,line=1,col=5,endColumn=7::Nice!"
-
-
-  job1-merge-queue:
-    runs-on: ubuntu-latest
-    if: github.event_name == 'merge_group'
-    steps:
-      - name: job 1 / step 1
-        run: echo "## job 1 / step 1"
+          echo "::notice file=.github/workflows/test_merge_group.yml,line=1,col=5,endColumn=7::Nice!"
       
-      - name: job 1 / step 2
-        run: echo "## job 1 / step 2" > $GITHUB_STEP_SUMMARY
-
-      - name: Fail!
+      - name: check 
+        if: github.event_name == 'merge_group'
         run: |
           echo "::error :: :poo: haha" && exit 1
+
 
   job2-push:
     runs-on: ubuntu-latest
