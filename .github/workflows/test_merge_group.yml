@@ -22,10 +22,10 @@ jobs:
     if: github.event_name == 'merge_queue'
     steps:
       - name: job 1 / step 1
-        run: echo "job 1 / step 1"
+        run: echo "## job 1 / step 1"
       
       - name: job 1 / step 2
-        run: echo "job 1 / step 2"
+        run: echo "## job 1 / step 2" > $GITHUB_STEP_SUMMARY
 
 
   job2-push:
@@ -36,8 +36,9 @@ jobs:
         run: echo "job 2 / step 1"
       
       - name: job 2 / step 2
-        run: echo "job 2 / step 2"
+        run: |
+          echo "job 2 / step 2 :cake: " > $GITHUB_STEP_SUMMARY
   
 
       - name: Fail!
-        run: echo "::error :poo:" && exit 1
+        run: echo "::error :: :poo:" && exit 1
