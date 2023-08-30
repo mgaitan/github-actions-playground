@@ -2,10 +2,6 @@ name: tests
 on:
   pull_request:
   merge_group:
-  push:
-    branches:
-    - main
-
 
 jobs:
   job0:
