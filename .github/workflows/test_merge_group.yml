@@ -19,7 +19,7 @@ jobs:
 
   job1-merge-queue:
     runs-on: ubuntu-latest
-    if: github.event_name == 'merge_queue'
+    if: github.event_name == 'merge_group'
     steps:
       - name: job 1 / step 1
         run: echo "## job 1 / step 1"
