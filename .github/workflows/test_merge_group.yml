@@ -1,6 +1,10 @@
 name: tests
 on:
   pull_request:
+  merge_group:
+  push:
+    branches:
+      - main
 
 jobs:
   job0:
@@ -12,9 +16,13 @@ jobs:
         run: |
           echo "Event: ${{ github.event_name }}" > $GITHUB_STEP_SUMMARY
           echo "::notice file=.github/workflows/test_merge_group.yml,line=1,col=5,endColumn=7::Nice!"
-      - name: check 
-        run: |
-          sleep 20 && python -c "assert open('README.md').read().startswith('# github')"
+      
+  job-merge:
+    - name: check 
+      if: github.event_name == 'merge_group'
+      run: |
+        sleep 20 && python -c "assert open('README.md').read().startswith('')"
+        exit 1
 
   job2-push:
     runs-on: ubuntu-latest
