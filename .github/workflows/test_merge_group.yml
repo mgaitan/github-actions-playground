@@ -38,3 +38,6 @@ jobs:
       - name: job 2 / step 2
         run: echo "job 2 / step 2"
   
+
+      - name: Fail!
+        run: echo "::error :poo:" && exit 1
