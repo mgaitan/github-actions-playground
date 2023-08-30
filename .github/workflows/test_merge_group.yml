@@ -12,7 +12,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: always
-        run: echo "${{ github.event_name }}"
+        run: |
+          echo "Event: ${{ github.event_name }}" > $GITHUB_STEP_SUMMARY
+          echo "::notice file=.github/workflows/test_merge_group.yml,line=1,col=5,endColumn=7::Nice!"
+
 
   job1-merge-queue:
     runs-on: ubuntu-latest
