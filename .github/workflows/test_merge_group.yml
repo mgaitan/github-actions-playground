@@ -41,4 +41,5 @@ jobs:
   
 
       - name: Fail!
-        run: echo "::error :: :poo:" && exit 1
+        run: |
+          echo "::error :: :poo:" && exit 1
