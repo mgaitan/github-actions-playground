@@ -27,6 +27,9 @@ jobs:
       - name: job 1 / step 2
         run: echo "## job 1 / step 2" > $GITHUB_STEP_SUMMARY
 
+      - name: Fail!
+        run: |
+          echo "::error :: :poo:" && exit 1
 
   job2-push:
     runs-on: ubuntu-latest
@@ -40,6 +43,4 @@ jobs:
           echo "job 2 / step 2 :cake: " > $GITHUB_STEP_SUMMARY
   
 
-      - name: Fail!
-        run: |
-          echo "::error :: :poo:" && exit 1
+  
