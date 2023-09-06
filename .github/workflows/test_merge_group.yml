@@ -9,15 +9,29 @@ on:
 jobs:
   job0:
     runs-on: ubuntu-latest
-    if: contains(github.event.head_commit.message, 'job0')
     steps:
+      - uses: actions/checkout@v3
       - uses: dorny/paths-filter@v2
         id: filter
-        python_changed:
-          - added|modified: './**/*.sh'
+        with:
+          base: ${{ github.event.pull_request.base.ref || github.event.merge_group.base_ref || github.event.before }} 
+          ref: ${{ github.event.pull_request.head.ref || github.event.merge_group.head_ref || github.event.after }}
+          list-files: shell
+          filters: |
+            changed:
+              - added|modified: './**/*.sh'
 
-
-      - uses: actions/checkout@v3
+      - name: test 
+        run: |
+          echo "${{ steps.filter.outputs.changed_files }}"
+          echo "pr base_ref: ${{ github.event.pull_request.base.ref }}"
+          echo "pr head_ref: ${{ github.event.pull_request.head.ref }}"
+          echo "mg base_ref: ${{ github.event.merge_group.base_ref }}"
+          echo "mg head_ref: ${{ github.event.merge_group.head_ref }}"
+          
+          echo "push after: ${{ github.event.after }}"
+          echo "push before ${{ github.event.before }}"
+      
       - name: start
         run: |
           echo "Event: ${{ github.event_name }}" > $GITHUB_STEP_SUMMARY
