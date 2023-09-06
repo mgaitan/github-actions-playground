@@ -9,7 +9,7 @@ on:
 jobs:
   job0:
     runs-on: ubuntu-latest
-    if: contains(github.event.head_commit.message, 'job0')
+    if: false
     steps:
       - uses: actions/checkout@v3
       - name: start
