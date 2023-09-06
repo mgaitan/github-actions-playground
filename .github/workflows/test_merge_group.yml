@@ -21,7 +21,6 @@ jobs:
         if: github.event_name == 'merge_group'
         run: |
           sleep 20 && python -c "assert open('README.md').read().startswith('#')"
-          exit 1
 
   # only 
   job2-push:
