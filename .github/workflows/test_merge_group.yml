@@ -11,6 +11,12 @@ jobs:
     runs-on: ubuntu-latest
     if: contains(github.event.head_commit.message, 'job0')
     steps:
+      - uses: dorny/paths-filter@v2
+        id: filter
+        python_changed:
+          - added|modified: './**/*.sh'
+
+
       - uses: actions/checkout@v3
       - name: start
         run: |
