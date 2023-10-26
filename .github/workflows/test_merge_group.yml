@@ -37,6 +37,14 @@ jobs:
           echo "Event: ${{ github.event_name }}" > $GITHUB_STEP_SUMMARY
           echo "::notice file=.github/workflows/test_merge_group.yml,line=1,col=5,endColumn=7::Nice!"
       
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v38
+
+      - name: Lint
+        run: |
+          echo "${{ steps.changed-files.outputs.all_changed_files }}"
+
       - name: check 
         if: github.event_name == 'merge_group'
         run: |
