@@ -49,7 +49,7 @@ jobs:
               other_jobs = [job for job in jobs['jobs'] if job['name'] != current_job_name]
               return all(job['conclusion'] == 'success' for job in other_jobs)
 
-          max_retries = 10
+          max_retries = 20
           retry_count = 0
 
           while True:
@@ -69,6 +69,8 @@ jobs:
 
               time.sleep(1)
               retry_count += 1
+              print(f'retry {retry_count}')
+
 
       - name: THEN
         if: matrix.portion == 1
