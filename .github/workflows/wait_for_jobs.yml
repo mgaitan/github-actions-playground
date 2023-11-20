@@ -32,6 +32,7 @@ jobs:
           token = os.environ['GITHUB_TOKEN']
           
           current_job_name = os.environ['CURRENT_JOB_NAME']
+          print(f"{current_job_name=}")
           headers = {'Authorization': f'token {token}'}
 
           def get_workflow_jobs():
