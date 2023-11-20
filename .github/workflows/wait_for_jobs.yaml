@@ -54,7 +54,8 @@ jobs:
 
           while True:
               jobs = get_workflow_jobs()
-              print(jobs)
+              if retry_count == 0:
+                  print(jobs)
 
               if all_other_jobs_completed(jobs):
                   if all_other_jobs_successful(jobs):
@@ -66,7 +67,7 @@ jobs:
               if retry_count >= max_retries:
                   raise Exception("Maximum retry attempts reached.")
 
-              time.sleep(30)  # Wait for 30 seconds before retrying
+              time.sleep(1)
               retry_count += 1
 
         - name: THEN
