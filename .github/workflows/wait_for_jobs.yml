@@ -80,6 +80,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: AFTER
-        if: matrix.portion == "1"
         run: |
           echo "after job!"
