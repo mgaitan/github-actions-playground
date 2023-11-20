@@ -1,0 +1,84 @@
+name: tests
+on:
+  pull_request:
+
+
+jobs:
+  
+  test:
+    runs-on: ubuntu-latest
+    strategy: 
+      matrix: 
+        portion: ["1", "2", "3"]
+
+    steps:
+      - name: DO
+        shell: python
+        run: |
+          import time
+          time.sleep(int("{{ matrix.portion }}") * 10)
+          print("done")
+
+      - name: WAIT
+        if: matrix.portion == "1"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WORKFLOW_RUN_ID: ${{ github.run_id }}
+          CURRENT_JOB_NAME: ${{ github.job }}
+        run: |
+          import requests
+          import time
+          import os
+
+          token = os.environ['GITHUB_TOKEN']
+          run_id = os.environ['WORKFLOW_RUN_ID']
+          current_job_name = os.environ['CURRENT_JOB_NAME']
+          headers = {'Authorization': f'token {token}'}
+
+          def get_workflow_jobs():
+              url = f"https://api.github.com/repos/{github.repository}/actions/runs/{run_id}/jobs"
+              response = requests.get(url, headers=headers)
+              response.raise_for_status()
+              return response.json()
+
+          def all_other_jobs_completed(jobs):
+              other_jobs = [job for job in jobs['jobs'] if job['name'] != current_job_name]
+              return all(job['status'] == 'completed' for job in other_jobs)
+
+          def all_other_jobs_successful(jobs):
+              other_jobs = [job for job in jobs['jobs'] if job['name'] != current_job_name]
+              return all(job['conclusion'] == 'success' for job in other_jobs)
+
+          max_retries = 10
+          retry_count = 0
+
+          while True:
+              jobs = get_workflow_jobs()
+              print(jobs)
+
+              if all_other_jobs_completed(jobs):
+                  if all_other_jobs_successful(jobs):
+                      print("All other jobs have completed successfully.")
+                      break
+                  else:
+                      raise Exception("Some jobs did not finish successfully.")
+              
+              if retry_count >= max_retries:
+                  raise Exception("Maximum retry attempts reached.")
+
+              time.sleep(30)  # Wait for 30 seconds before retrying
+              retry_count += 1
+
+        - name: THEN
+          if: matrix.portion == "1"
+          run: |
+            echo "then done!"
+
+  other-job:
+    needs: [test]
+    runs-on: ubuntu-latest
+    steps:
+      - name: AFTER
+        if: matrix.portion == "1"
+        run: |
+          echo "after job!"
