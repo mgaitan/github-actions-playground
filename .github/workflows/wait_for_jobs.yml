@@ -19,7 +19,7 @@ jobs:
           print("done")
 
       - name: WAIT
-        if: matrix.portion == "1"
+        if: matrix.portion == 1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WORKFLOW_RUN_ID: ${{ github.run_id }}
@@ -71,7 +71,7 @@ jobs:
               retry_count += 1
 
       - name: THEN
-        if: matrix.portion == "1"
+        if: matrix.portion == 1
         run: |
           echo "then done!"
 
