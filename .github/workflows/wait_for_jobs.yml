@@ -54,7 +54,8 @@ jobs:
           while True:
               jobs = get_workflow_jobs()
               if retry_count == 0:
-                  print(jobs)
+                  import json
+                  print(json.dumps(jobs, indent=2))
 
               if all_other_jobs_completed(jobs):
                   if all_other_jobs_successful(jobs):
