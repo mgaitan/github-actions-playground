@@ -15,7 +15,7 @@ jobs:
         shell: python
         run: |
           import time
-          time.sleep(int("{{ matrix.portion }}") * 10)
+          time.sleep(int("${{ matrix.portion }}") * 10)
           print("done")
 
       - name: WAIT
